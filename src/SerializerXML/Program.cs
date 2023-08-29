@@ -1,37 +1,31 @@
-﻿using AdvancedTips.Core;
+﻿using SerializerXML;
 using System.Diagnostics;
-using System.IO;
 using System.Xml.Serialization;
 
-Console.WriteLine("1 - Serializer User to XML, saving file in c:\\temp\\advancedTips\\serializerXml");
-Console.WriteLine("2 - Exit");
+string filePath = @"c:\temp\advancedTips\serializerXml";
 
-ConsoleKeyInfo UserInput = Console.ReadKey();
-if (UserInput.KeyChar == '1')
-{
-    string filePath = @"c:\temp\advancedTips\serializerXml";
-    SerializerToXml(filePath);
-}
-else
-{
-    Console.ReadLine();
-}
+SerializerToXml(filePath);
 
 
 static void SerializerToXml(string filePath)
 {
+    // create directory
     EnsureDirectoryExists(filePath);
 
-    User user = new("Guilherme", "email@test.com", "111.111.111.11");
+    Member member = new("Guilherme", "guilhermelucas.contato@gmail.com", 27, DateTime.UtcNow, true);
 
-    XmlSerializer serializer = new(typeof(User));
+    XmlSerializer serializer = new(typeof(Member));
+
+    Console.WriteLine("...Serializing");
 
     using StreamWriter stream = new(path: filePath);
 
-    serializer.Serialize(stream, user);
+    // serializer to xml
+    serializer.Serialize(stream, member);
 
-    Console.WriteLine("...Serializing");
     Console.WriteLine("Congratulations! Xml was create successfully");
+
+    // open the file
     Process.Start(new ProcessStartInfo("explorer.exe", filePath));
 }
 
@@ -42,8 +36,11 @@ static void EnsureDirectoryExists(string filePath)
     {
         return;
     }
-    if (!fi.Directory.Exists)
+
+    if (fi.Directory.Exists)
     {
-        Directory.CreateDirectory(fi.DirectoryName);
+        return;
     }
+
+    Directory.CreateDirectory(fi.DirectoryName);
 }
