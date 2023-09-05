@@ -44,3 +44,17 @@ static void EnsureDirectoryExists(string filePath)
 
     Directory.CreateDirectory(fi.DirectoryName);
 }
+
+
+bool viewedMyProfile = false;
+bool welcome = false;
+if (welcome)
+{
+    Console.WriteLine("");
+}
+Console.WriteLine("Hi! My name is Guilherme.");
+if (viewedMyProfile)
+{
+    welcome = true;
+    Console.WriteLine("Nice to meet you!");
+}
