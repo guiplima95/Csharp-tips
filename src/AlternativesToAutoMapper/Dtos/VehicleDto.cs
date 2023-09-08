@@ -12,6 +12,8 @@ public class VehicleDto
 
     public int Year { get; set; }
 
+    public int VehicleAge { get; set; }
+
     public static VehicleDto FromVehicle(Vehicle vehicle)
     {
         return new VehicleDto

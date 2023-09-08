@@ -26,6 +26,7 @@ public class Vehicle
             Plate = Plate,
             Price = Price,
             Year = Year,
+            VehicleAge = DateTime.UtcNow.Year - Year
         };
     }
 
@@ -37,6 +38,7 @@ public class Vehicle
             Plate = vehicle.Plate,
             Price = vehicle.Price,
             Year = vehicle.Year,
+            VehicleAge = DateTime.UtcNow.Year - vehicle.Year
         };
     }
 }

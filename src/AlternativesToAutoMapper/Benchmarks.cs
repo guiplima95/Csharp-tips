@@ -7,8 +7,8 @@ namespace AlternativesToAutoMapper;
 
 public class Benchmarks
 {
-    private Vehicle[] _vehicles;
-    private IMapper _mapper;
+    private Vehicle[]? _vehicles;
+    private IMapper? _mapper;
 
     [Params(10, 100, 1000)]
 
@@ -21,7 +21,9 @@ public class Benchmarks
             => cfg.CreateMap<Vehicle, VehicleDto>()
             .ForMember(dest => dest.Plate, opt => opt.MapFrom(src => src.Plate))
             .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
-            .ForMember(dest => dest.Brand, opt => opt.MapFrom(src => src.Brand)));
+            .ForMember(dest => dest.Brand, opt => opt.MapFrom(src => src.Brand))
+            .ForMember(dest => dest.VehicleAge, opt => opt.MapFrom(src => DateTime.UtcNow.Year - src.Year)));
+
 
         _mapper = config.CreateMapper();
 
@@ -42,6 +44,9 @@ public class Benchmarks
     [Benchmark]
     public void With_AutoMapper()
     {
+        ArgumentNullException.ThrowIfNull(_vehicles);
+        ArgumentNullException.ThrowIfNull(_mapper);
+
         foreach (var vehicle in _vehicles)
         {
             var vehicleDto = _mapper.Map<VehicleDto>(vehicle);
@@ -51,6 +56,8 @@ public class Benchmarks
     [Benchmark]
     public void Without_AutoMapper_Direct_Assignment()
     {
+        ArgumentNullException.ThrowIfNull(_vehicles);
+
         foreach (var vehicle in _vehicles)
         {
             var vehicleDto = vehicle.ToVehicleDto();
@@ -60,6 +67,8 @@ public class Benchmarks
     [Benchmark]
     public void Without_AutoMapper_With_Implicit_Operator()
     {
+        ArgumentNullException.ThrowIfNull(_vehicles);
+
         foreach (var vehicle in _vehicles)
         {
             VehicleDto vehicleDto = vehicle;
